@@ -1,32 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { X } from 'lucide-vue-next'
+import type { ListingForm } from '~/models/Marketplace'
 
-interface ListingForm {
-  name: string
-  price: number | null
-  exchange: string
-  mode: string
-  minCapital: number | null
-  roi: number | null
-  winRate: number | null
-  maxDrawdown: number | null
-  profitFactor: number | null
-  description: string
-}
-
-const form = ref<ListingForm>({
-  name: '',
-  price: null,
-  exchange: 'BINANCE FUTURES (USDT-M)',
-  mode: 'Hedge Mode',
-  minCapital: 200,
-  roi: null,
-  winRate: null,
-  maxDrawdown: null,
-  profitFactor: null,
-  description: '',
-})
+const form = defineModel<ListingForm>({ required: true })
 
 defineProps<{
   show: boolean
@@ -44,15 +19,12 @@ const handleSubmit = () => {
 
 <template>
   <div class="mt-4 flex items-center justify-center">
-    <!-- Form -->
     <form
       @submit.prevent="handleSubmit"
     >
       <div class="space-y-6">
-        <!-- Basic Information -->
         <div class="space-y-4">
           <h3 class="text-lg font-semibold">Basic Information</h3>
-
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label class="block text-sm font-medium text-gray-400 mb-1">Bot Name</label>
@@ -64,7 +36,6 @@ const handleSubmit = () => {
                 required
               />
             </div>
-
             <div>
               <label class="block text-sm font-medium text-gray-400 mb-1">Price</label>
               <div class="relative">
@@ -80,7 +51,6 @@ const handleSubmit = () => {
               </div>
             </div>
           </div>
-
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label class="block text-sm font-medium text-gray-400 mb-1">Exchange</label>
@@ -107,7 +77,6 @@ const handleSubmit = () => {
               </select>
             </div>
           </div>
-
           <div>
             <label class="block text-sm font-medium text-gray-400 mb-1"
               >Minimum Capital Required</label
@@ -126,11 +95,8 @@ const handleSubmit = () => {
             </div>
           </div>
         </div>
-
-        <!-- Performance Metrics -->
         <div class="space-y-4">
           <h3 class="text-lg font-semibold">Performance Metrics</h3>
-
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label class="block text-sm font-medium text-gray-400 mb-1">ROI (%)</label>
@@ -143,7 +109,6 @@ const handleSubmit = () => {
                 required
               />
             </div>
-
             <div>
               <label class="block text-sm font-medium text-gray-400 mb-1">Win Rate (%)</label>
               <input
@@ -158,7 +123,6 @@ const handleSubmit = () => {
               />
             </div>
           </div>
-
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label class="block text-sm font-medium text-gray-400 mb-1">Max Drawdown (%)</label>
@@ -171,7 +135,6 @@ const handleSubmit = () => {
                 required
               />
             </div>
-
             <div>
               <label class="block text-sm font-medium text-gray-400 mb-1">Profit Factor</label>
               <input
@@ -186,8 +149,6 @@ const handleSubmit = () => {
             </div>
           </div>
         </div>
-
-        <!-- Description -->
         <div class="space-y-2">
           <label class="block text-sm font-medium text-gray-400">Description</label>
           <textarea
@@ -199,8 +160,6 @@ const handleSubmit = () => {
           ></textarea>
         </div>
       </div>
-
-      <!-- Footer -->
       <div class="mt-8 flex justify-end gap-4">
         <button
           type="button"

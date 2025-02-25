@@ -10,23 +10,9 @@ import RadioSection from '~/blocks/signal-bot/RadioSection.vue'
 const currentStep = ref(1)
 const showApiSecret = ref(false)
 
-const timeframe = ref('5')
-
-const botSettings = ref({
-  botName: 'BOT-NAME-3cZJIE',
-  description: '',
-  apiKey: '',
-  apiSecret: '',
-  timeframeUnit: 'minute',
-  multipleEntries: false,
-  swingTrade: false,
-  botStartCondition: 'tradingview',
-  settingsFormat: 'form',
-  orderType: 'market',
-  amountType: 'form',
-  leverage: '1',
-  percentage: '20',
-})
+const botSettings = defineModel<any>({ required: true })
+const botList = defineModel<any>('bot-list')
+const open = defineModel<any>('open')
 
 // Exit settings
 const exits = ref<Exits>({
@@ -52,12 +38,12 @@ const toggleApiSecret = () => {
 }
 
 const incrementTimeframe = () => {
-  timeframe.value = String(Number(timeframe.value) + 1)
+  botSettings.value.timeframe = String(Number(botSettings.value.timeframe) + 1)
 }
 
 const decrementTimeframe = () => {
-  if (Number(timeframe.value) > 1) {
-    timeframe.value = String(Number(timeframe.value) - 1)
+  if (Number(botSettings.value.timeframe) > 1) {
+    botSettings.value.timeframe = String(Number(botSettings.value.timeframe) - 1)
   }
 }
 
@@ -69,20 +55,20 @@ const handleBack = () => {
   currentStep.value = 1
 }
 
-const handleComplete = () => {}
+const handleComplete = () => {
+  botList.value.push(botSettings.value)
+  open.value = false
+}
 </script>
 
 <template>
   <div class="max-w-3xl mx-auto">
     <Step v-model="currentStep" />
-    <!-- Main Content -->
     <div class="rounded-lg px-8">
-      <!-- Settings Step -->
       <div
         v-if="currentStep === 1"
         class="space-y-8"
       >
-        <!-- General Section -->
         <div>
           <h2 class="text-3xl font-bold mb-6">General</h2>
           <div class="space-y-6">
@@ -104,8 +90,6 @@ const handleComplete = () => {}
                 />
               </div>
             </div>
-
-            <!-- Exchange Selection -->
             <div>
               <label class="block text-sm mb-2">Exchange</label>
               <div
@@ -126,8 +110,6 @@ const handleComplete = () => {}
                 />
               </div>
             </div>
-
-            <!-- API Credentials -->
             <div>
               <div class="flex items-center gap-2 mb-2">
                 <label class="text-sm">API Credentials</label>
@@ -169,8 +151,6 @@ const handleComplete = () => {}
                 </div>
               </div>
             </div>
-
-            <!-- Pairs Section -->
             <div>
               <div class="flex items-center gap-2 mb-2">
                 <label class="text-sm">Pairs</label>
@@ -195,8 +175,6 @@ const handleComplete = () => {}
                 />
               </div>
             </div>
-
-            <!-- Timeframe Section -->
             <div>
               <div class="flex items-center gap-2 mb-2">
                 <label class="text-sm">Timeframe</label>
@@ -209,7 +187,7 @@ const handleComplete = () => {}
                 <div class="relative w-32">
                   <input
                     type="number"
-                    v-model="timeframe"
+                    v-model="botSettings.timeframe"
                     class="w-full bg-white border border-[#363945] rounded-md px-4 py-3 focus:outline-none focus:border-primary"
                   />
                   <div class="absolute right-2 top-1/2 transform -translate-y-1/2 flex flex-col">
@@ -237,8 +215,6 @@ const handleComplete = () => {}
                 </select>
               </div>
             </div>
-
-            <!-- Multiple Entries & Swing Trade -->
             <div class="space-y-4">
               <label class="flex items-center gap-2 cursor-pointer">
                 <input
@@ -292,12 +268,8 @@ const handleComplete = () => {}
                 />
               </label>
             </div>
-
             <RadioSection v-model="botSettings"/>
-
-            <!-- Exits Section -->
             <ExitsSection v-model="exits" />
-
             <button
               @click="handleCreateBot"
               class="w-full bg-primary text-white py-3 rounded-md hover:bg-green-800 transition-colors"
@@ -329,6 +301,3 @@ const handleComplete = () => {}
     </div>
   </div>
 </template>
-<style scoped>
-
-</style>

@@ -23,6 +23,20 @@ const initialBot = {
   followers: 0,
   avatar: '',
 }
+
+const form = ref<ListingForm>({
+  name: '',
+  price: null,
+  exchange: 'BINANCE FUTURES (USDT-M)',
+  mode: 'Hedge Mode',
+  minCapital: 200,
+  roi: null,
+  winRate: null,
+  maxDrawdown: null,
+  profitFactor: null,
+  description: '',
+})
+
 const selectedBot = ref<Bot>(initialBot)
 const bots = ref<Array<Bot>>(initialBots)
 const search = ref<string>()
@@ -170,6 +184,7 @@ watch(search, () => {
         <h2 class="text-2xl font-bold">Create Bot Listing</h2>
       </template>
       <CreateListingModal
+        v-model="form"
         :show="showCreateListing"
         @close="closeCreateListing"
         @submit="handleCreateListing"
