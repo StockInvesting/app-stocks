@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/multi-word-component-names -->
 <script lang="ts" setup>
 import { newsList } from '~/static/news'
 import { Search } from 'lucide-vue-next'

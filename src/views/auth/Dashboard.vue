@@ -1,9 +1,11 @@
+<!-- eslint-disable vue/multi-word-component-names -->
+<!-- eslint-disable @typescript-eslint/no-explicit-any -->
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import DashCard from '~/blocks/dashboard/DashCard.vue'
 import SelectPlatformModal from '~/blocks/dashboard/SelectPlatformModal.vue'
 import { getMarkets } from '~/composables/externalApi'
-import { useUserStore, type InvestOption } from '~/stores/user'
+import { useUserStore } from '~/stores/user'
 import { Search } from 'lucide-vue-next'
 
 const { investOption } = useUserStore()

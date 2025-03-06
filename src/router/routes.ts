@@ -14,14 +14,13 @@ const routes = [
   {
     path: '',
     component: () => import('~/layouts/Layout.vue'),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: false },
     redirect: '/dashboard',
     children: [
       {
         path: '/dashboard',
         name: 'dashboard',
         component: () => import('~/views/auth/Dashboard.vue'),
-        alias: '/'
       },
       {
         path: '/profile',
@@ -31,7 +30,12 @@ const routes = [
       {
         path: '/tradeview',
         name: 'tradeview',
-        component: () => import('~/views/auth/Tradeview.vue')
+        component: () => import('~/views/auth/TradeView.vue')
+      },
+      {
+        path: '/stocks',
+        name: 'stocks',
+        component: () => import('~/views/auth/Stocks.vue')
       },
       {
         path: '/news',
