@@ -1,3 +1,6 @@
+<!-- eslint-disable vue/multi-word-component-names -->
+<!-- eslint-disable @typescript-eslint/no-explicit-any -->
+<!-- eslint-disable vue/multi-word-component-names -->
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
 import { transactions } from '~/static/wallet'
