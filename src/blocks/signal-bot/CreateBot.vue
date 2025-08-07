@@ -14,6 +14,22 @@ const botSettings = defineModel<any>({ required: true })
 const botList = defineModel<any>('bot-list')
 const open = defineModel<any>('open')
 
+// Configurações adicionais
+const riskManagement = ref({
+  maxOpenPositions: 3,
+  maxDailyLoss: 5,
+  maxDrawdown: 10,
+  positionSize: 100,
+})
+
+// Notificações
+const notifications = ref({
+  telegram: false,
+  email: false,
+  discord: false,
+  webhook: true,
+})
+
 // Exit settings
 const exits = ref<Exits>({
   takeProfit: false,
@@ -48,6 +64,11 @@ const decrementTimeframe = () => {
 }
 
 const handleCreateBot = () => {
+  // Validação dos campos obrigatórios
+  if (!botSettings.value.botName || !botSettings.value.apiKey || !botSettings.value.apiSecret) {
+    alert('Por favor, preencha todos os campos obrigatórios')
+    return
+  }
   currentStep.value = 2
 }
 
@@ -70,22 +91,24 @@ const handleComplete = () => {
         class="space-y-8"
       >
         <div>
-          <h2 class="text-3xl font-bold mb-6">General</h2>
+          <h2 class="text-3xl font-bold mb-6">Configurações Gerais</h2>
           <div class="space-y-6">
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm mb-2">Name</label>
+                <label class="block text-sm mb-2">Nome do Bot <span class="text-red-500">*</span></label>
                 <input
                   type="text"
                   v-model="botSettings.botName"
+                  placeholder="Digite um nome para seu bot"
                   class="w-full bg-white border border-[#363945] rounded-md px-4 py-3 focus:outline-none focus:border-primary"
                 />
               </div>
               <div>
-                <label class="block text-sm mb-2">Description</label>
+                <label class="block text-sm mb-2">Descrição</label>
                 <input
                   type="text"
                   v-model="botSettings.description"
+                  placeholder="Descreva a estratégia do seu bot"
                   class="w-full bg-white border border-[#363945] rounded-md px-4 py-3 focus:outline-none focus:border-primary"
                 />
               </div>
@@ -270,12 +293,134 @@ const handleComplete = () => {
             </div>
             <RadioSection v-model="botSettings"/>
             <ExitsSection v-model="exits" />
-            <button
-              @click="handleCreateBot"
-              class="w-full bg-primary text-white py-3 rounded-md hover:bg-green-800 transition-colors"
-            >
-              Create Signal Bot
-            </button>
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <h3 class="text-lg font-semibold mb-4">Gerenciamento de Risco</h3>
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm mb-2">Posições Máximas Abertas</label>
+                  <input
+                    type="number"
+                    v-model="riskManagement.maxOpenPositions"
+                    class="w-full bg-white border border-[#363945] rounded-md px-4 py-3 focus:outline-none focus:border-primary"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm mb-2">Perda Máxima Diária (%)</label>
+                  <input
+                    type="number"
+                    v-model="riskManagement.maxDailyLoss"
+                    class="w-full bg-white border border-[#363945] rounded-md px-4 py-3 focus:outline-none focus:border-primary"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm mb-2">Drawdown Máximo (%)</label>
+                  <input
+                    type="number"
+                    v-model="riskManagement.maxDrawdown"
+                    class="w-full bg-white border border-[#363945] rounded-md px-4 py-3 focus:outline-none focus:border-primary"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm mb-2">Tamanho da Posição (USDT)</label>
+                  <input
+                    type="number"
+                    v-model="riskManagement.positionSize"
+                    class="w-full bg-white border border-[#363945] rounded-md px-4 py-3 focus:outline-none focus:border-primary"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <h3 class="text-lg font-semibold mb-4">Notificações</h3>
+              <div class="grid grid-cols-2 gap-4">
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    v-model="notifications.telegram"
+                    class="hidden"
+                  />
+                  <div
+                    :class="[
+                      'w-6 h-6 rounded border flex items-center justify-center',
+                      notifications.telegram
+                        ? 'bg-primary border-primary'
+                        : 'border-[#363945]',
+                    ]"
+                  >
+                    <span v-if="notifications.telegram" class="text-white">✓</span>
+                  </div>
+                  <span>Telegram</span>
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    v-model="notifications.email"
+                    class="hidden"
+                  />
+                  <div
+                    :class="[
+                      'w-6 h-6 rounded border flex items-center justify-center',
+                      notifications.email
+                        ? 'bg-primary border-primary'
+                        : 'border-[#363945]',
+                    ]"
+                  >
+                    <span v-if="notifications.email" class="text-white">✓</span>
+                  </div>
+                  <span>Email</span>
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    v-model="notifications.discord"
+                    class="hidden"
+                  />
+                  <div
+                    :class="[
+                      'w-6 h-6 rounded border flex items-center justify-center',
+                      notifications.discord
+                        ? 'bg-primary border-primary'
+                        : 'border-[#363945]',
+                    ]"
+                  >
+                    <span v-if="notifications.discord" class="text-white">✓</span>
+                  </div>
+                  <span>Discord</span>
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    v-model="notifications.webhook"
+                    class="hidden"
+                  />
+                  <div
+                    :class="[
+                      'w-6 h-6 rounded border flex items-center justify-center',
+                      notifications.webhook
+                        ? 'bg-primary border-primary'
+                        : 'border-[#363945]',
+                    ]"
+                  >
+                    <span v-if="notifications.webhook" class="text-white">✓</span>
+                  </div>
+                  <span>Webhook</span>
+                </label>
+              </div>
+            </div>
+            <div class="flex justify-end gap-4">
+              <button
+                @click="open = false"
+                class="px-6 py-2 border border-[#363945] rounded-md hover:bg-gray-100"
+              >
+                Cancelar
+              </button>
+              <button
+                @click="handleCreateBot"
+                class="px-6 py-2 bg-primary text-white rounded-md hover:bg-primary-dark"
+              >
+                Próximo
+              </button>
+            </div>
           </div>
         </div>
       </div>
