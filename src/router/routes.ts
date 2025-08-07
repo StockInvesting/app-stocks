@@ -35,6 +35,7 @@ const routes = [
       {
         path: '/stocks',
         name: 'stocks',
+        // @ts-ignore
         component: () => import('~/views/auth/Stocks.vue')
       },
       {

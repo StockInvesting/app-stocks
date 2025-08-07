@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { Info, AlertCircle } from 'lucide-vue-next'
+import { ref } from 'vue'
 
 const botSettings = defineModel<any>({ required: true })
 
