@@ -101,7 +101,7 @@ const testWebhook = async () => {
                 class="w-full bg-white border border-[#363945] rounded-md px-4 py-3 pr-12 focus:outline-none focus:border-[#2962ff]"
               />
               <button
-                @click="() => handleCopy(alertData.alertMessage, 'message')"
+                @click="() => handleCopy(alertData.alertMessage || '', 'message')"
                 class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
               >
                 <Copy :size="20" />
@@ -122,7 +122,7 @@ const testWebhook = async () => {
                 class="w-full bg-white border border-[#363945] rounded-md px-4 py-3 pr-12 focus:outline-none focus:border-[#2962ff]"
               />
               <button
-                @click="() => handleCopy(alertData.enterLong, 'long')"
+                @click="() => handleCopy(alertData.enterLong || '', 'long')"
                 class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
               >
                 <Copy :size="20" />
