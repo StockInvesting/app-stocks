@@ -30,7 +30,7 @@ const routes = [
       {
         path: '/tradeview',
         name: 'tradeview',
-        component: () => import('~/views/auth/TradeView.vue')
+        component: () => import('~/views/auth/Tradeview.vue')
       },
       {
         path: '/stocks',
